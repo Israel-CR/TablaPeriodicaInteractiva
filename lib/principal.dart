@@ -56,123 +56,97 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
     }
 
     if (listaElementos.isEmpty) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
+      return const Scaffold(
+         body:Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
 
-    
+            children: [
+                  LinearProgressIndicator(),
+                  SizedBox(height: 16.0),
+                  Text("Cargando datos...")// Indicador de carga lineal
+              ],
+                )
+                );
+    }else{
 
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue,
           title: const Text("Tabla periodica"),
         ),
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-                padding: EdgeInsets.only(top: 10, left: 5),
-                scrollDirection: Axis.horizontal,
-                 controller: _horizontalScrollController,
-                child: Container(
-                    width: widhtContenedor, //se ajusta segun la pantalla
-                    child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 18,
-                                mainAxisExtent: 50,
-                                crossAxisSpacing: 1,
-                                mainAxisSpacing: 1,
-                                childAspectRatio: 1),
-                        itemCount: listaElementos.length + 61,
-                        itemBuilder: (context, int index) {
-                          //ordenar la lista de elementos por el numero atomico
-                          listaElementos.sort(
-                              (a, b) => a.numAtomico.compareTo(b.numAtomico));
-
-                          //condiciones para ordenar los elementos en la tabla periodica
-                          if (index >= 0 && index < 1) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index]);
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('lib/img/fondo.jpg'), // Ruta de la imagen
+              fit: BoxFit.cover, // Ajusta la imagen al tamaño del container
+            ),
+          ),
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                  padding: EdgeInsets.only(top: 10, left: 5),
+                  scrollDirection: Axis.horizontal,
+                   controller: _horizontalScrollController,
+                  child: Container(
+                      width: widhtContenedor, //se ajusta segun la pantalla
+                      child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 18,
+                                  mainAxisExtent: 50,
+                                  crossAxisSpacing: 1,
+                                  mainAxisSpacing: 1,
+                                  childAspectRatio: 1),
+                          itemCount: listaElementos.length + 61,
+                          itemBuilder: (context, int index) {
+                            //ordenar la lista de elementos por el numero atomico
+                            listaElementos.sort(
+                                (a, b) => a.numAtomico.compareTo(b.numAtomico));
+        
+                            //condiciones para ordenar los elementos en la tabla periodica
+                            if (index >= 0 && index < 1) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index]);
+                            }
+        
+                            if (index >= 17 && index <= 19) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 16]);
+                            }
+                            if (index >= 30 && index <= 37) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 26]);
+                            }
+                            if (index >= 48 && index <= 92) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 36]);
+                            }
+                            if (index >= 93 && index <= 110) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 22]);
+                            }
+                            if (index >= 111 && index <= 125) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 8]);
+                            }
+                            if (index >= 147 && index <= 160) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 90]);
+                            }
+                            if (index >= 165 && index <= 178) {
+                              return ElementoWidget(
+                                  elemento: listaElementos[index - 76]);
+                            }
+        
+                            return Text('');
                           }
-
-                          if (index >= 17 && index <= 19) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 16]);
-                          }
-                          if (index >= 30 && index <= 37) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 26]);
-                          }
-                          if (index >= 48 && index <= 92) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 36]);
-                          }
-                          if (index >= 93 && index <= 110) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 22]);
-                          }
-                          if (index >= 111 && index <= 125) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 8]);
-                          }
-                          if (index >= 147 && index <= 160) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 90]);
-                          }
-                          if (index >= 165 && index <= 178) {
-                            return ElementoWidget(
-                                elemento: listaElementos[index - 76]);
-                          }
-
-                          return Text('');
-                        }))),
-            // Container(
-            //     height: 30,
-            //     margin: EdgeInsets.only(
-            //       left: 20,
-            //     ),
-            //     padding: EdgeInsets.all(4),
-            //     color: Colors.transparent,
-            //     child: ListView(
-            //       scrollDirection: Axis.horizontal,
-            //        controller: _horizontalScrollController,
-            //       children: [
-            //         for (var i = 1; i <= 18; i++)
-            //           Container(
-            //             width: (widhtContenedor / 18) - 2.5,
-            //             margin: EdgeInsets.all(1.2),
-            //             padding: EdgeInsets.all(2),
-            //             color: Colors.purpleAccent,
-            //             child: Text("$i",
-            //                 style: TextStyle(color: Colors.white),
-            //                 textAlign: TextAlign.center),
-            //           )
-            //       ],
-            //     )),
-            // Container(
-            //     width: 25,
-            //     margin: EdgeInsets.only(
-            //       top: 25,
-            //     ),
-            //     padding: EdgeInsets.all(4),
-            //     color: Colors.transparent,
-            //     child: ListView(
-            //       controller: _verticalScrollController,
-            //       children: [
-            //         for (var i = 1; i <= 10; i++)
-            //           Container(
-            //             margin: EdgeInsets.all(1),
-            //             color: Colors.blueAccent,
-            //             height: 49,
-            //             child: Text(
-            //               "$i",
-            //               style: TextStyle(color: Colors.white),
-            //             ),
-            //           )
-            //       ],
-            //     ))
-          ],
-        ));
+                        )
+                      )
+                    ),
+              
+            ],
+          ),
+        ));}
   }
 }

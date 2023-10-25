@@ -6,7 +6,6 @@ void main() {
   runApp(const MyApp());
 }
 
-
   class Elemento{
   String nombre;
   String Simbolo;
@@ -16,10 +15,7 @@ Elemento({required this.nombre,required this.Simbolo, required this.numAtomico})
 }
 
 class MyApp extends StatelessWidget {
-
-
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

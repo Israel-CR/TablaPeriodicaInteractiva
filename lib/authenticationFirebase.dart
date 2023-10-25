@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tabla_periodica_interactiva/auth.dart';
 import 'package:tabla_periodica_interactiva/principal.dart';
 
 // import 'package:tabla_periodica/auth.dart';
 // import 'package:tabla_periodica/principal.dart';
-
-
 
 class EstadoAutenticar extends StatefulWidget {
   const EstadoAutenticar({super.key});
@@ -16,93 +15,67 @@ class EstadoAutenticar extends StatefulWidget {
 
 class _EstadoAutenticar extends State<EstadoAutenticar> {
 
-  Future<User?> loginUsingEmailPassword({required String email,
-      required String password,required BuildContext context}) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? user;
-    try {
-      UserCredential userCredential = await auth.signInWithEmailAndPassword(
-          email: email, password: password);
-      user = userCredential.user;
-      
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print( "el correo o la contraseña son incorrectos");
-      }else if (e.code !='user-not-found'){
-        print("el correo o la contraseña es incorrecta");
-      }
-
-      if (e.code == 'wrond password') {
-        print("la contraseña es muy corta");
-      }
-    }
-      print(user);
-    return user;
-    
-  }
   
 
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Login-Registro',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Iniciar Sesion'),
-        ),
-        body: Center(
+    return  Scaffold(
+        body: ListView(
+          children:[
+        Container(
+          width: MediaQuery.of(context).size.width, // Ancho igual al ancho de la pantalla
+          height: MediaQuery.of(context).size.height,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('lib/img/fondo.jpg'), // Ruta de la imagen
+              fit: BoxFit.cover, // Ajusta la imagen al tamaño del container
+            ),
+          ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Container(
-                    child: Icon(
-                  Icons.person,
-                  size: 250,
-                )),
-                Container(
+                  margin: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    color: Colors.white
+                  ),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       TextField(
                         controller: email,
-                        obscureText: false,
                         // ignore: prefer_const_constructors
                         decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
                           labelText: 'Usuario',
                           icon: const Icon(Icons.person),
-                          contentPadding: const EdgeInsets.all(20),
-                          fillColor: Colors.greenAccent,
+                          fillColor: Colors.blueGrey,
                           hintText: "Usuario:",
                           // ignore: prefer_const_constructors
                           hintStyle: const TextStyle(
-                              color:  Color.fromARGB(255, 44, 201, 125)),
+                              color:  Colors.black38),
                         ),
                       ),
+                      const SizedBox(height: 10,),
                       TextField(
                         controller: password,
                         obscureText: true,
                         // ignore: prefer_const_constructors
                         decoration: InputDecoration(
-                          border: const OutlineInputBorder(),
                           labelText: 'Password',
                           icon: const Icon(Icons.password),
-                          contentPadding: const EdgeInsets.all(20),
-                          fillColor: Colors.greenAccent,
-                          hintText: "Password:",
+                          fillColor: Colors.blueGrey,
+                          hintText: "escribe tu contraseña:",
                           hintStyle: const TextStyle(
-                              color: Color.fromARGB(255, 56, 133, 49)),
+                              color: Colors.black38,)
                         ),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  child: Column(
-                    children: <Widget>[
-                      ElevatedButton(
+                      SizedBox(height: 10,),
+                      TextButton(
                           onPressed: () async {
                             User? user = await loginUsingEmailPassword(
                                 email: email.text.trim(),
@@ -115,15 +88,45 @@ class _EstadoAutenticar extends State<EstadoAutenticar> {
                                       builder: (context) => const PantallaPrincipal()));
                             }
                           },
-                          child: const Text("Iniciar Sesion")),
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all(Size(150, 40)),
+                              backgroundColor:MaterialStateProperty.all(Colors.blue), // Cambia el color de fondo
+                              ),
+                          child: const Text("Iniciar Sesion",
+                          style:TextStyle(
+                            color: Colors.white
+                          )
+                          )),
+                          Text("¿aun no tienes una cuenta?"),
+                           TextButton(
+                          onPressed: () async {
+                            User? user = await loginUsingEmailPassword(
+                                email: email.text.trim(),
+                                password: password.text.trim(),
+                                context: context);
+                            if (user != null) {
+                              // ignore: use_build_context_synchronously
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => const PantallaPrincipal()));
+                            }
+                          },
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all(Size(150, 40)),
+                              backgroundColor:MaterialStateProperty.all(Colors.blueGrey), // Cambia el color de fondo
+                            ),
+                          child: const Text("Registrate",
+                          style:TextStyle(
+                            color: Colors.white
+                          )
+                          )),
 
                     ],
                   ),
                 ),
               ],
             ),
-          ),
-        ),
+          ),])
       );
   }
 }
